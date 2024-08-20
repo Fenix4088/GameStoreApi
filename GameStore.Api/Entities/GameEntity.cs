@@ -1,6 +1,6 @@
 namespace GameStore.Api.Entities;
 
-public class Game
+public class GameEntity
 {
     public int Id { get; set; }
     public required string Name { get; set; }
