@@ -3,9 +3,9 @@ using GameStore.Api.Models;
 
 namespace GameStore.Api.Repositories;
 
-public class InMemGamesRepository
+public class InMemGamesRepository : IGamesRepository
 {
-    private readonly List <GameEntity> Games = new()
+    private static List <GameEntity> Games = new()
     {
         new GameEntity()
         {

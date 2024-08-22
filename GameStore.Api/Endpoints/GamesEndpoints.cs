@@ -9,36 +9,33 @@ public static class GamesEndpoints
     
     private const string GetGamesEndpointName = "GetGame";
     
- 
-
    public static RouteGroupBuilder MapGamesEndpoints(this IEndpointRouteBuilder routes)
    {
-       InMemGamesRepository inMemGamesRepository = new();
       
       var group = routes.MapGroup("/games")
           .WithParameterValidation();
       
-      group.MapGet("", () => inMemGamesRepository.GetAll())
+      group.MapGet("", (IGamesRepository gamesRepository) => gamesRepository.GetAll())
           .WithName("GetGames")
           .WithOpenApi();
       
-      group.MapGet("/{id}", (int id) =>
+      group.MapGet("/{id}", (IGamesRepository gamesRepository, int id) =>
       {
-          var game = inMemGamesRepository.Get(id);
+          var game = gamesRepository.Get(id);
 
           if (game is null) return Results.NotFound();
 
           return Results.Ok(game);
       }).WithName(GetGamesEndpointName);
       
-      group.MapPost("", (CreateGamePayload payload) => inMemGamesRepository.Create(payload)).WithName("CreateNewGame");
+      group.MapPost("", (IGamesRepository gamesRepository, CreateGamePayload payload) => gamesRepository.Create(payload)).WithName("CreateNewGame");
       
       
-      group.MapPut("/{id}", (int id, CreateGamePayload payload) =>
+      group.MapPut("/{id}", (IGamesRepository gamesRepository, int id, CreateGamePayload payload) =>
       {
           try
           {
-              inMemGamesRepository.Update(id, payload);
+              gamesRepository.Update(id, payload);
 
               return Results.Ok();
           }
@@ -48,7 +45,7 @@ public static class GamesEndpoints
           }
       }).WithName("UpdateGame");
       
-      group.MapDelete("/{id}", (int id) => inMemGamesRepository.Delete(id)).WithName("DeleteGame");
+      group.MapDelete("/{id}", (IGamesRepository gamesRepository, int id) => gamesRepository.Delete(id)).WithName("DeleteGame");
 
       return group;
    }
