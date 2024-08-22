@@ -1,3 +1,4 @@
+using GameStore.Api.Dtos;
 using GameStore.Api.Entities;
 using GameStore.Api.Models;
 
@@ -40,21 +41,21 @@ public class InMemGamesRepository : IGamesRepository
 
     public GameEntity? Get(int id) => Games.Find(game => game.Id == id);
 
-    public void Create(CreateGamePayload payload)
+    public void Create(CreateGameDto createGameDto)
     {
         var newGame = new GameEntity()
         {
             Id = new Random().Next(),
-            Name = payload.Name,
-            Genre = payload.Genre,
-            Price = payload.Price,
-            ReleaseDate = payload.ReleaseDate,
-            ImageUri = payload.ImageUri
+            Name = createGameDto.Name,
+            Genre = createGameDto.Genre,
+            Price = createGameDto.Price,
+            ReleaseDate = createGameDto.ReleaseDate,
+            ImageUri = createGameDto.ImageUri
         };
         Games.Add(newGame);
     }
 
-    public void Update(int id, CreateGamePayload payload)
+    public void Update(int id, UpdateGameDto updateGameDto)
     {
         
         GameEntity? game = Get(id);
@@ -65,11 +66,11 @@ public class InMemGamesRepository : IGamesRepository
         {
             if (game.Id == id)
             {
-                game.Name = payload.Name;
-                game.Genre = payload.Genre;
-                game.Price = payload.Price;
-                game.ReleaseDate = payload.ReleaseDate;
-                game.ImageUri = payload.ImageUri;
+                game.Name = updateGameDto.Name;
+                game.Genre = updateGameDto.Genre;
+                game.Price = updateGameDto.Price;
+                game.ReleaseDate = updateGameDto.ReleaseDate;
+                game.ImageUri = updateGameDto.ImageUri;
             };
       
             return game;

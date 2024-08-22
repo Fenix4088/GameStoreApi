@@ -1,3 +1,4 @@
+using GameStore.Api.Dtos;
 using GameStore.Api.Entities;
 using GameStore.Api.Models;
 using GameStore.Api.Repositories;
@@ -15,7 +16,7 @@ public static class GamesEndpoints
       var group = routes.MapGroup("/games")
           .WithParameterValidation();
       
-      group.MapGet("", (IGamesRepository gamesRepository) => gamesRepository.GetAll())
+      group.MapGet("", (IGamesRepository gamesRepository) => gamesRepository.GetAll().Select(gameEntity => gameEntity.AsDto()))
           .WithName("GetGames")
           .WithOpenApi();
       
@@ -25,17 +26,17 @@ public static class GamesEndpoints
 
           if (game is null) return Results.NotFound();
 
-          return Results.Ok(game);
+          return Results.Ok(game.AsDto());
       }).WithName(GetGamesEndpointName);
       
-      group.MapPost("", (IGamesRepository gamesRepository, CreateGamePayload payload) => gamesRepository.Create(payload)).WithName("CreateNewGame");
+      group.MapPost("", (IGamesRepository gamesRepository, CreateGameDto createGameDto) => gamesRepository.Create(createGameDto)).WithName("CreateNewGame");
       
       
-      group.MapPut("/{id}", (IGamesRepository gamesRepository, int id, CreateGamePayload payload) =>
+      group.MapPut("/{id}", (IGamesRepository gamesRepository, int id, UpdateGameDto updateGameDto) =>
       {
           try
           {
-              gamesRepository.Update(id, payload);
+              gamesRepository.Update(id, updateGameDto);
 
               return Results.Ok();
           }
