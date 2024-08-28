@@ -1,6 +1,5 @@
 using GameStore.Api.Dtos;
 using GameStore.Api.Entities;
-using GameStore.Api.Models;
 using GameStore.Api.Repositories;
 
 namespace GameStore.Api.Endpoints;
