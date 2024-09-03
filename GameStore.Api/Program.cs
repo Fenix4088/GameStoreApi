@@ -1,3 +1,4 @@
+using GameStore.Api.Dtos.Data;
 using GameStore.Api.Endpoints;
 using GameStore.Api.Repositories;
 
@@ -9,7 +10,8 @@ builder.Services.AddSingleton<IGamesRepository, InMemGamesRepository>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var connectionString = builder.Configuration.GetConnectionString("GameStoreContext");
+var connectionString = builder.Configuration.GetConnectionString("GameStoreDbContext");
+builder.Services.AddSqlServer<GameStoreDbContext>(connectionString);
 
 var app = builder.Build();
 
