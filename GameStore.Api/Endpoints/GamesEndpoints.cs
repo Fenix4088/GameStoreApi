@@ -1,3 +1,5 @@
+using System.Security.Cryptography;
+using GameStore.Api.Authorization;
 using GameStore.Api.Dtos;
 using GameStore.Api.Entities;
 using GameStore.Api.Repositories;
@@ -30,9 +32,14 @@ public static class GamesEndpoints
           if (game is null) return Results.NotFound();
 
           return Results.Ok(game.AsDto());
-      }).WithName(GetGamesEndpointName);
+      })
+          .WithName(GetGamesEndpointName)
+          .RequireAuthorization(Policies.ReadAccess);
       
-      group.MapPost("", (IGamesRepository gamesRepository, CreateGameDto createGameDto) => gamesRepository.CreateAsync(createGameDto)).WithName("CreateNewGame");
+      group.MapPost("", (IGamesRepository gamesRepository, CreateGameDto createGameDto) => gamesRepository.CreateAsync(createGameDto))
+          .WithName("CreateNewGame")
+          .RequireAuthorization(Policies.WriteAccess);
+      
       
       
       group.MapPut("/{id}", (IGamesRepository gamesRepository, int id, UpdateGameDto updateGameDto) =>
@@ -47,9 +54,13 @@ public static class GamesEndpoints
           {
               return Results.NotFound(e.Message);
           }
-      }).WithName("UpdateGame");
+      })
+          .WithName("UpdateGame")
+          .RequireAuthorization(Policies.WriteAccess);
       
-      group.MapDelete("/{id}", (IGamesRepository gamesRepository, int id) => gamesRepository.DeleteAsync(id)).WithName("DeleteGame");
+      group.MapDelete("/{id}", (IGamesRepository gamesRepository, int id) => gamesRepository.DeleteAsync(id))
+          .WithName("DeleteGame")
+          .RequireAuthorization(Policies.WriteAccess);
 
       return group;
    }
