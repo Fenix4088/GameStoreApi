@@ -4,14 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GameStore.Api.Dtos.Data;
 
-public class GameStoreDbContext: DbContext
+public class GameStoreDbContext(DbContextOptions<GameStoreDbContext> options) : DbContext(options)
 {
-    public GameStoreDbContext(DbContextOptions<GameStoreDbContext> options)
-    : base(options)
-    {
-        
-    }
-
     public DbSet<GameEntity> Games => Set<GameEntity>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
