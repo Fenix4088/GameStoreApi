@@ -7,7 +7,7 @@ builder.Services.AddRepositories(builder.Configuration);
 
 var app = builder.Build();
 
-app.Services.InitializeDb();
+await app.Services.InitializeDbAsync();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -8,11 +8,11 @@ namespace GameStore.Api.Repositories;
 public class EntityFrameworkGamesRepository(GameStoreDbContext dbContext) : IGamesRepository
 {
     private readonly GameStoreDbContext dbContext = dbContext;
-    public IEnumerable<GameEntity> GetAll() => dbContext.Games.AsNoTracking().ToList();
+    public async  Task<IEnumerable<GameEntity>> GetAllAsync() => await dbContext.Games.AsNoTracking().ToListAsync();
 
-    public GameEntity? Get(int id) => dbContext.Games.Find(id);
+    public async  Task<GameEntity?> GetAsync(int id) => await dbContext.Games.FindAsync(id);
 
-    public void Create(CreateGameDto createGameDto)
+    public async Task CreateAsync(CreateGameDto createGameDto)
     {
         dbContext.Games.Add(new GameEntity()
         {
@@ -22,12 +22,12 @@ public class EntityFrameworkGamesRepository(GameStoreDbContext dbContext) : IGam
             ReleaseDate = createGameDto.ReleaseDate,
             ImageUri = createGameDto.ImageUri
         });
-        dbContext.SaveChanges();
+        await dbContext.SaveChangesAsync();
     }
 
-    public void Update(int id, UpdateGameDto updateGameDto)
+    public async  Task UpdateAsync(int id, UpdateGameDto updateGameDto)
     {
-        GameEntity? game = Get(id);
+        GameEntity? game = await GetAsync(id);
         
         if (game is null) throw new KeyNotFoundException("Game not found");
         
@@ -38,8 +38,10 @@ public class EntityFrameworkGamesRepository(GameStoreDbContext dbContext) : IGam
         game.ImageUri = updateGameDto.ImageUri;
 
         dbContext.Games.Update(game);
-        dbContext.SaveChanges();
+        await dbContext.SaveChangesAsync();
     }
 
-    public void Delete(int id) => dbContext.Games.Where(game => game.Id == id).ExecuteDelete();
+    public async Task  DeleteAsync(int id) =>  await dbContext.Games
+        .Where(game => game.Id == id)
+        .ExecuteDeleteAsync();
 }

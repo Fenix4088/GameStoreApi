@@ -15,27 +15,31 @@ public static class GamesEndpoints
       var group = routes.MapGroup("/games")
           .WithParameterValidation();
       
-      group.MapGet("", (IGamesRepository gamesRepository) => gamesRepository.GetAll().Select(gameEntity => gameEntity.AsDto()))
+      group.MapGet("", async (IGamesRepository gamesRepository) =>
+          {
+              var allGames = await gamesRepository.GetAllAsync();
+              return allGames.Select(gameEntity => gameEntity.AsDto());
+          })
           .WithName("GetGames")
           .WithOpenApi();
       
-      group.MapGet("/{id}", (IGamesRepository gamesRepository, int id) =>
+      group.MapGet("/{id}", async (IGamesRepository gamesRepository, int id) =>
       {
-          var game = gamesRepository.Get(id);
+          var game = await gamesRepository.GetAsync(id);
 
           if (game is null) return Results.NotFound();
 
           return Results.Ok(game.AsDto());
       }).WithName(GetGamesEndpointName);
       
-      group.MapPost("", (IGamesRepository gamesRepository, CreateGameDto createGameDto) => gamesRepository.Create(createGameDto)).WithName("CreateNewGame");
+      group.MapPost("", (IGamesRepository gamesRepository, CreateGameDto createGameDto) => gamesRepository.CreateAsync(createGameDto)).WithName("CreateNewGame");
       
       
       group.MapPut("/{id}", (IGamesRepository gamesRepository, int id, UpdateGameDto updateGameDto) =>
       {
           try
           {
-              gamesRepository.Update(id, updateGameDto);
+              gamesRepository.UpdateAsync(id, updateGameDto);
 
               return Results.Ok();
           }
@@ -45,7 +49,7 @@ public static class GamesEndpoints
           }
       }).WithName("UpdateGame");
       
-      group.MapDelete("/{id}", (IGamesRepository gamesRepository, int id) => gamesRepository.Delete(id)).WithName("DeleteGame");
+      group.MapDelete("/{id}", (IGamesRepository gamesRepository, int id) => gamesRepository.DeleteAsync(id)).WithName("DeleteGame");
 
       return group;
    }

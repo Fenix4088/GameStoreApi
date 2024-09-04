@@ -36,11 +36,11 @@ public class InMemGamesRepository : IGamesRepository
         },
     };
 
-    public IEnumerable<GameEntity> GetAll() => Games;
+    public async Task<IEnumerable<GameEntity>> GetAllAsync() => await Task.FromResult<IEnumerable<GameEntity>>(Games);
 
-    public GameEntity? Get(int id) => Games.Find(game => game.Id == id);
+    public async  Task<GameEntity?> GetAsync(int id) => await Task.FromResult(Games.Find(game => game.Id == id));
 
-    public void Create(CreateGameDto createGameDto)
+    public async Task CreateAsync(CreateGameDto createGameDto)
     {
         var newGame = new GameEntity()
         {
@@ -52,12 +52,13 @@ public class InMemGamesRepository : IGamesRepository
             ImageUri = createGameDto.ImageUri
         };
         Games.Add(newGame);
+        await Task.CompletedTask;
     }
 
-    public void Update(int id, UpdateGameDto updateGameDto)
+    public async Task UpdateAsync(int id, UpdateGameDto updateGameDto)
     {
         
-        GameEntity? game = Get(id);
+        GameEntity? game = await GetAsync(id);
         
         if (game is null) throw new KeyNotFoundException("Game not found");
           
@@ -74,10 +75,13 @@ public class InMemGamesRepository : IGamesRepository
       
             return game;
         }).ToArray();
+
+        await Task.CompletedTask;
     }
 
-    public void Delete(int id) {
-        GameEntity? game = Get(id);
+    public async Task DeleteAsync(int id) {
+        GameEntity? game = await GetAsync(id);
         Games.Remove(game);
+        await Task.CompletedTask;
     }
 }
