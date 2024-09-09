@@ -14,13 +14,11 @@ public class EntityFrameworkGamesRepository(
     private readonly ILogger<EntityFrameworkGamesRepository> logger = logger;
     public async  Task<IEnumerable<GameEntity>> GetAllAsync()
     {
-        throw new InvalidOperationException("The DB connection is closed!");
         return await dbContext.Games.AsNoTracking().ToListAsync();
     }
 
     public async Task<GameEntity?> GetAsync(int id)
     {
-        throw new InvalidOperationException("The DB connection is closed!");
         return await dbContext.Games.FindAsync(id);
     }
 
