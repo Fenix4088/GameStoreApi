@@ -5,12 +5,25 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GameStore.Api.Repositories;
 
-public class EntityFrameworkGamesRepository(GameStoreDbContext dbContext) : IGamesRepository
+public class EntityFrameworkGamesRepository(
+    GameStoreDbContext dbContext, 
+    ILogger<EntityFrameworkGamesRepository> logger
+    ) : IGamesRepository
 {
     private readonly GameStoreDbContext dbContext = dbContext;
-    public async  Task<IEnumerable<GameEntity>> GetAllAsync() => await dbContext.Games.AsNoTracking().ToListAsync();
+    private readonly ILogger<EntityFrameworkGamesRepository> logger = logger;
+    public async  Task<IEnumerable<GameEntity>> GetAllAsync()
+    {
+        throw new InvalidOperationException("The DB connection is closed!");
+        return await dbContext.Games.AsNoTracking().ToListAsync();
+    }
 
-    public async  Task<GameEntity?> GetAsync(int id) => await dbContext.Games.FindAsync(id);
+    public async Task<GameEntity?> GetAsync(int id)
+    {
+        throw new InvalidOperationException("The DB connection is closed!");
+        return await dbContext.Games.FindAsync(id);
+    }
+
 
     public async Task CreateAsync(CreateGameDto createGameDto)
     {
@@ -23,6 +36,7 @@ public class EntityFrameworkGamesRepository(GameStoreDbContext dbContext) : IGam
             ImageUri = createGameDto.ImageUri
         });
         await dbContext.SaveChangesAsync();
+        logger.LogInformation("Created game {Name} with price {Price}.", createGameDto.Name, createGameDto.Price);
     }
 
     public async  Task UpdateAsync(int id, UpdateGameDto updateGameDto)

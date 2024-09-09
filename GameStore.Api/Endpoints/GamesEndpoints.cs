@@ -1,4 +1,3 @@
-using System.Security.Cryptography;
 using GameStore.Api.Authorization;
 using GameStore.Api.Dtos;
 using GameStore.Api.Entities;
@@ -17,10 +16,10 @@ public static class GamesEndpoints
       var group = routes.MapGroup("/games")
           .WithParameterValidation();
       
-      group.MapGet("", async (IGamesRepository gamesRepository) =>
+      group.MapGet("", async (IGamesRepository gamesRepository, ILoggerFactory loggerFactory) =>
           {
-              var allGames = await gamesRepository.GetAllAsync();
-              return allGames.Select(gameEntity => gameEntity.AsDto());
+                var allGames = await gamesRepository.GetAllAsync();
+                return Results.Ok(allGames.Select(gameEntity => gameEntity.AsDto()));
           })
           .WithName("GetGames")
           .WithOpenApi();
