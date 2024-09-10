@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GameStore.Api.Dtos;
 
-public record GameDto(
+public record GameDtoV1(
     int Id,
     string Name,
     string Genre,
@@ -10,6 +10,16 @@ public record GameDto(
     DateTime ReleaseDate,
     string ImageUri
     );
+
+public record GameDtoV2(
+    int Id,
+    string Name,
+    string Genre,
+    decimal Price,
+    decimal RetailPrice,
+    DateTime ReleaseDate,
+    string ImageUri
+);
     
 public record CreateGameDto(
     [Required]

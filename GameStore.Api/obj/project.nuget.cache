@@ -1,9 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "OAOuv/P0V4Cy1E8MK14pn87702CmDzeMl2eJVOtNViUcCpoJ2stui3O0UGzxw7KsItObgsVcWxEW9S10ZG0YPQ==",
+  "dgSpecHash": "hB+QWVPcXlUO0XTQDXy4kqo8S4irhVEBGbxjnk/BaQTiIFd2LvhLU1/5cKvSxp06IzSzOi1zOZe76tPTpPJrEA==",
   "success": true,
   "projectFilePath": "/Users/fenix/Documents/webdev/courses/exercism/GameStore.Api/GameStore.Api/GameStore.Api.csproj",
   "expectedPackageFiles": [
+    "/Users/fenix/.nuget/packages/asp.versioning.abstractions/8.1.0/asp.versioning.abstractions.8.1.0.nupkg.sha512",
+    "/Users/fenix/.nuget/packages/asp.versioning.http/8.1.0/asp.versioning.http.8.1.0.nupkg.sha512",
+    "/Users/fenix/.nuget/packages/asp.versioning.mvc/8.0.0/asp.versioning.mvc.8.0.0.nupkg.sha512",
+    "/Users/fenix/.nuget/packages/asp.versioning.mvc.apiexplorer/8.0.0/asp.versioning.mvc.apiexplorer.8.0.0.nupkg.sha512",
     "/Users/fenix/.nuget/packages/azure.core/1.35.0/azure.core.1.35.0.nupkg.sha512",
     "/Users/fenix/.nuget/packages/azure.identity/1.10.3/azure.identity.1.10.3.nupkg.sha512",
     "/Users/fenix/.nuget/packages/humanizer.core/2.14.1/humanizer.core.2.14.1.nupkg.sha512",
